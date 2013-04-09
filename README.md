@@ -74,6 +74,8 @@ This will return with a value indicating if the `obj` conforms to the `schema`. 
 * __validateFormatsStrict__: When `validateFormats` is _true_ treat unrecognized formats as validation errors (_default false_)
 * __validateFormatExtensions__: When `validateFormats` is _true_ also validate formats defined in `validate.formatExtensions` (_default true_)
 * __cast__: Enforce casting of some types (for integers/numbers are only supported) when it's possible, e.g. `"42" => 42`, but `"forty2" => "forty2"` for the `integer` type.
+* __deleteUnknownProperties__: Deletes all properties from object which are not declared in the schema. (_default false_)
+* __convert__: Converts a property by the format defined in the schema and returns the converted object in the result. (_default undefined_)
 
 ### Schema
 For a property an `value` is that which is given as input for validation where as an `expected value` is the value of the below fields
@@ -271,6 +273,40 @@ We also allow custom message for different constraints
   message: 'This can be used as a global message'
 }
 ```
+
+### Convert option
+Converts a property by the format defined in the schema and returns the converted object in the result.
+
+```js
+var data = {
+  birthdate: '1979-03-01T15:55:00.000Z'
+};
+
+var schema = {
+  properties: {
+    birthdate: {
+      type: 'string',
+      format: 'date-time'
+    }
+  }
+};
+
+var convertFn = function(format, value) {
+  if (format === 'date-time') {
+    return new Date(value);
+  }
+
+  return value;
+};
+
+var result = validate(data, schema, {convert: convertFn});
+
+// birthdate was converted
+typeof result.convertedObject === 'object';
+typeof result.convertedObject.birthdate === 'object';
+
+```
+
 
 ## Tests
 All tests are written with [vows][0] and should be run with [npm][1]:
