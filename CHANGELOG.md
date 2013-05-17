@@ -1,4 +1,9 @@
 
+0.1.6 / 2013-05-17
+==================
+
+  * Fixed error when converting values in arrays
+
 0.1.3 / 2012-10-17
 ==================
 
