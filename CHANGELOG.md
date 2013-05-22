@@ -1,4 +1,9 @@
 
+0.1.7 / 2013-05-22
+==================
+
+  * Fixed error that there was no check if the convert function exists in options
+
 0.1.6 / 2013-05-17
 ==================
 
