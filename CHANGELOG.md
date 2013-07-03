@@ -1,3 +1,7 @@
+0.1.8 / 2013-07-03
+==================
+
+  * Add support for validating multiple formats (array notation)
 
 0.1.7 / 2013-05-22
 ==================

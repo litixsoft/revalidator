@@ -202,6 +202,7 @@ Value must be a valid format
 { format: 'host-name' }
 { format: 'utc-millisec' }
 { format: 'regex' }
+{ format: ['ip-address', 'ipv6'] }
 ```
 
 #### conform
