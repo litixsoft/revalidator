@@ -1,3 +1,8 @@
+0.1.9 / 2013-07-08
+==================
+
+  * Fix error in IE when using the keyword default (schema.default is now schema['default'])
+
 0.1.8 / 2013-07-03
 ==================
 
