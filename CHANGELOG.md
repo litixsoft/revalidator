@@ -2,6 +2,8 @@
 ==================
 
   * Fix error in color regex. ('and yellow' is now 'yellow')
+  * Update vows to version 0.7.x
+  * Fix spelling error in tests
 
 0.1.9 / 2013-07-08
 ==================
