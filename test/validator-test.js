@@ -298,7 +298,7 @@ vows.describe('revalidator', {
             var duble = clone(object);
             duble.not_here = 'ohno';
             return {
-              valid: revalidator.validate(duble, schema, { deleteUnknowProperties: true }).valid,
+              valid: revalidator.validate(duble, schema, { deleteUnknownProperties: true }).valid,
               target: duble
             }
           },
