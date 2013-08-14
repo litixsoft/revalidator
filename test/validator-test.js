@@ -189,7 +189,13 @@ vows.describe('revalidator', {
         topic: function (schema) {
           return revalidator.validate({ town: "luna", area: 'park' }, schema);
         },
-        "return an object with `valid` set to false": assertInvalid
+        "return an object with `valid` set to false": function (res) {
+            assert.isObject(res);
+            assert.strictEqual(res.valid, false);
+            assert.isArray(res.errors);
+            assert.isString(res.errors[0].message);
+            assert.equal(res.errors[0].message, 'must not exist');
+        }
       }
     }
   }
