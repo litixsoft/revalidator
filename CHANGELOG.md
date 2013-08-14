@@ -1,3 +1,11 @@
+0.2.1 / 2013-08-14
+==================
+
+  * Refer to incoming object in custom conform functions
+  * Default message for `additionalProperties`
+  * Add option 'trim' to trim string values
+  * Add option 'strictRequired' which sets validity of empty strings to false
+
 0.2.0 / 2013-08-08
 ==================
 

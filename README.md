@@ -69,13 +69,16 @@ This will return with a value indicating if the `obj` conforms to the `schema`. 
 ```
 
 #### Available Options
-
-* __validateFormats__: Enforce format constraints (_default true_)
-* __validateFormatsStrict__: When `validateFormats` is _true_ treat unrecognized formats as validation errors (_default false_)
-* __validateFormatExtensions__: When `validateFormats` is _true_ also validate formats defined in `validate.formatExtensions` (_default true_)
-* __cast__: Enforce casting of some types (for integers/numbers are only supported) when it's possible, e.g. `"42" => 42`, but `"forty2" => "forty2"` for the `integer` type.
-* __deleteUnknownProperties__: Deletes all properties from object which are not declared in the schema. (_default false_)
-* __convert__: Converts a property by the format defined in the schema and returns the converted object in the result. (_default undefined_)
+* __validateFormats__: Enforce format constraints ( __default: `true`__ )
+* __validateFormatsStrict__: When `validateFormats` is `true` treat unrecognized formats as validation errors ( __default `false`__ )
+* __validateFormatExtensions__: When `validateFormats` is `true` also validate formats defined in `validate.formatExtensions`.
+This option is used for lx-valid format extensions and additional custom formats. Those are stored in here. ( __default: `true`__ )
+* __cast__: Enforce casting of some types (for integers/numbers are only supported) when it's possible,
+e.g. `"42" => 42`, but `"forty2" => "forty2"` for the integer type. ( __default: `undefined`__ )
+* __deleteUnknownProperties__: Deletes all properties from object which are not declared in the schema. ( __default: `false`__ )
+* __convert__: Converts a property by the format defined in the schema. Modifies the original object. ( __default: `undefined`__ )
+* __trim__: Trims all properties of type `string`. Modifies the original object. ( __default: `false`__ )
+* __strictRequired__: Sets validity of empty `string` to `false`. ( __default: `false`__ )
 
 ### Schema
 For a property an `value` is that which is given as input for validation where as an `expected value` is the value of the below fields

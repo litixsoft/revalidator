@@ -7,8 +7,7 @@ function clone(object) {
     obj[k] = object[k];
     return obj;
   }, {});
-};
-
+}
 
 function assertInvalid(res) {
   assert.isObject(res);
@@ -73,10 +72,15 @@ function assertValidates(passingValue, failingValue, attributes) {
       "return an object with `valid` set to false": assertInvalid,
       "and an error concerning the attribute":      assertHasError(Object.keys(attributes)[0], 'field')
     };
-  };
+  }
 
   return result;
 }
+
+var testData = {name: ' wayne '};
+var testData2 = {name: ' chuck '};
+var testData3 = {names: ['wayne', ' chuck ', 'norris ', ' wat']};
+var testData4 = {names: ['wayne', ' chuck ', 'norris ', ' wat']};
 
 vows.describe('revalidator', {
   "Validating": {
@@ -172,6 +176,65 @@ vows.describe('revalidator', {
       "<maximum> constraints":      assertValidates ( 512,      1949,      { maximum:   678, type: 'integer' }),
       "<divisibleBy> constraints":  assertValidates ( 10,       9,         { divisibleBy: 5, type: 'integer' })
     },
+    "with <type>: 'string' and <trim> option": {
+        topic: {
+            properties: {
+                name: { type: 'string' }
+            }
+        },
+        "when the <trim> option is false": {
+            topic: function (schema) {
+                return revalidator.validate(testData, schema);
+            },
+            "return an object with `valid` set to true": function (res) {
+                assert.isObject(res);
+                assert.strictEqual(res.valid, true);
+                assert.equal(testData.name, ' wayne ');
+            }
+        },
+        "when the <trim> option is true": {
+            topic: function (schema) {
+                return revalidator.validate(testData2, schema, {trim: true});
+            },
+            "return an object with `valid` set to true": function (res) {
+                assert.isObject(res);
+                assert.strictEqual(res.valid, true);
+                assert.equal(testData2.name, 'chuck');
+            }
+        }
+    },
+    "with <type>: 'array' and the array containing strings": {
+        topic: {
+            properties: {
+                names: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                }
+            }
+        },
+        "when the <trim> option is false": {
+            topic: function (schema) {
+                return revalidator.validate(testData3, schema, {trim: false});
+            },
+            "return an object with `valid` set to true": function (res) {
+                assert.isObject(res);
+                assert.strictEqual(res.valid, true);
+                assert.deepEqual(testData3.names, ['wayne', ' chuck ', 'norris ', ' wat']);
+            }
+        },
+        "when the <trim> option is true": {
+            topic: function (schema) {
+                return revalidator.validate(testData4, schema, {trim: true});
+            },
+            "return an object with `valid` set to true": function (res) {
+                assert.isObject(res);
+                assert.strictEqual(res.valid, true);
+                assert.deepEqual(testData4.names, ['wayne', 'chuck', 'norris', 'wat']);
+            }
+        }
+    },
     "with <additionalProperties>:false": {
       topic: {
         properties: {
@@ -197,7 +260,32 @@ vows.describe('revalidator', {
             assert.equal(res.errors[0].message, 'must not exist');
         }
       }
-    }
+    },
+      "with <strictRequired> option": {
+          topic: {
+              properties: {
+                  name: { type: 'string', required: true }
+              }
+          },
+          "when option <strictRequired>:false": {
+              topic: function (schema) {
+                  return revalidator.validate({ name: '' }, schema);
+              },
+              "return an object with `valid` set to true": assertValid
+          },
+          "when option <strictRequired>:true": {
+              topic: function (schema) {
+                  return revalidator.validate({ name: '' }, schema, { strictRequired: true });
+              },
+              "return an object with `valid` set to false": function (res) {
+                  assert.isObject(res);
+                  assert.strictEqual(res.valid, false);
+                  assert.isArray(res.errors);
+                  assert.isString(res.errors[0].message);
+                  assert.equal(res.errors[0].message, 'is required');
+              }
+          }
+      }
   }
 }).addBatch({
   "A schema": {
