@@ -158,7 +158,7 @@ vows.describe('revalidator', {
         topic: function (schema) {
           return revalidator.validate({ town: "luna", x: 1 }, schema);
         },
-        "return an object with `valid` set to true": assertValid,
+        "return an object with `valid` set to true": assertValid
       },
       "when the object does not conform": {
         topic: function (schema) {
@@ -238,9 +238,12 @@ vows.describe('revalidator', {
         palindrome: {type: 'string', conform: function(val) {
           return val == val.split("").reverse().join(""); }
         },
+        sameAsTitle: {conform: function(val, obj) {
+          return val == obj.title; }
+        },
         printed_at: { type: 'string', default: Date},
         printed_copies: { type: 'number', default: 100},
-        shipped_copies: { type: 'number', default: function(){return 50}},
+        shipped_copies: { type: 'number', default: function(){return 50}}
       },
       patternProperties: {
         '^_': {
@@ -259,6 +262,7 @@ vows.describe('revalidator', {
         published: true,
         category: 'misc',
         palindrome: 'dennis sinned',
+        sameAsTitle: 'Gimme some Gurus',
         _flag: true
       },
       "can be validated with `revalidator.validate`": {
@@ -370,6 +374,14 @@ vows.describe('revalidator', {
           },
           "return an object with `valid` set to false":       assertInvalid
         },
+        "and if it didn't validate a custom conform referring to another value in the object": {
+          topic: function (object, schema) {
+            object = clone(object);
+            object.sameAsTitle = 'Not the same as the title';
+            return revalidator.validate(object, schema);
+          },
+          "return an object with `valid` set to false":      assertInvalid
+        },
         "and if it didn't validate a pattern": {
           topic: function (object, schema) {
             object = clone(object);
@@ -378,7 +390,7 @@ vows.describe('revalidator', {
           },
           "return an object with `valid` set to false":      assertInvalid,
           "and an error concerning the 'pattern' attribute": assertHasError('pattern')
-        },
+        }
       }
     },
     "with <cast> option": {
