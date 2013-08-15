@@ -1,3 +1,8 @@
+0.2.3 / 2013-08-15
+==================
+
+  * Fix error that conform method was not executed when value was an empty string and option strictRequired was true
+
 0.2.2 / 2013-08-15
 ==================
 

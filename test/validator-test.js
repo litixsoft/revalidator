@@ -306,6 +306,50 @@ vows.describe('revalidator', {
                     assert.equal(res.errors[1].message, 'is required');
                 }
             }
+        },
+        "when option <strictRequired>:true and conform method": {
+            topic: {
+                properties: {
+                    name: { type: 'string' },
+                    conformedName: { type: 'string', conform: function(actual, original) { return actual === original.name; }}
+                }
+            },
+            "and conformedName is empty string with option <trim>:true": {
+                topic: function (schema) {
+                    return revalidator.validate({ name: 'wayne', conformedName: ' ' }, schema, { strictRequired: true, trim: true });
+                },
+                "return an object with `valid` set to false": function (res) {
+                    assert.isObject(res);
+                    assert.strictEqual(res.valid, false);
+                    assert.isArray(res.errors);
+                    assert.equal(res.errors[0].property, 'conformedName');
+                    assert.equal(res.errors[0].message, 'must conform to given constraint');
+                }
+            },
+            "and conformedName is empty string": {
+                topic: function (schema) {
+                    return revalidator.validate({ name: 'wayne', conformedName: '' }, schema, { strictRequired: true });
+                },
+                "return an object with `valid` set to false": function (res) {
+                    assert.isObject(res);
+                    assert.strictEqual(res.valid, false);
+                    assert.isArray(res.errors);
+                    assert.equal(res.errors[0].property, 'conformedName');
+                    assert.equal(res.errors[0].message, 'must conform to given constraint');
+                }
+            },
+            "and conformedName is empty string and option <strictRequired>:false": {
+                topic: function (schema) {
+                    return revalidator.validate({ name: 'wayne', conformedName: '' }, schema);
+                },
+                "return an object with `valid` set to false": function (res) {
+                    assert.isObject(res);
+                    assert.strictEqual(res.valid, false);
+                    assert.isArray(res.errors);
+                    assert.equal(res.errors[0].property, 'conformedName');
+                    assert.equal(res.errors[0].message, 'must conform to given constraint');
+                }
+            }
         }
     }
   }
