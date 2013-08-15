@@ -261,31 +261,53 @@ vows.describe('revalidator', {
         }
       }
     },
-      "with <strictRequired> option": {
-          topic: {
-              properties: {
-                  name: { type: 'string', required: true }
-              }
-          },
-          "when option <strictRequired>:false": {
-              topic: function (schema) {
-                  return revalidator.validate({ name: '' }, schema);
-              },
-              "return an object with `valid` set to true": assertValid
-          },
-          "when option <strictRequired>:true": {
-              topic: function (schema) {
-                  return revalidator.validate({ name: '' }, schema, { strictRequired: true });
-              },
-              "return an object with `valid` set to false": function (res) {
-                  assert.isObject(res);
-                  assert.strictEqual(res.valid, false);
-                  assert.isArray(res.errors);
-                  assert.isString(res.errors[0].message);
-                  assert.equal(res.errors[0].message, 'is required');
-              }
+    "with <strictRequired> option": {
+      topic: {
+          properties: {
+              name: { type: 'string', required: true }
           }
-      }
+      },
+      "when option <strictRequired>:false": {
+          topic: function (schema) {
+              return revalidator.validate({ name: '' }, schema);
+          },
+          "return an object with `valid` set to true": assertValid
+      },
+      "when option <strictRequired>:true": {
+          topic: function (schema) {
+              return revalidator.validate({ name: '' }, schema, { strictRequired: true });
+          },
+          "return an object with `valid` set to false": function (res) {
+              assert.isObject(res);
+              assert.strictEqual(res.valid, false);
+              assert.isArray(res.errors);
+              assert.isString(res.errors[0].message);
+              assert.equal(res.errors[0].message, 'is required');
+          }
+      },
+        "when option <strictRequired>:true and": {
+            topic: {
+                properties: {
+                    name: { type: 'string', required: true },
+                    names: { type: 'array', items: { type: 'string', required: true }}
+                }
+            },
+            "and option <trim>:true": {
+                topic: function (schema) {
+                    return revalidator.validate({ name: '   ', names: ['wayne', '   '] }, schema, { strictRequired: true, trim: true });
+                },
+                "return an object with `valid` set to false": function (res) {
+                    assert.isObject(res);
+                    assert.strictEqual(res.valid, false);
+                    assert.isArray(res.errors);
+                    assert.equal(res.errors[0].property, 'name');
+                    assert.equal(res.errors[0].message, 'is required');
+                    assert.equal(res.errors[1].property, 'names');
+                    assert.equal(res.errors[1].message, 'is required');
+                }
+            }
+        }
+    }
   }
 }).addBatch({
   "A schema": {

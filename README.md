@@ -219,6 +219,24 @@ Value must conform to constraint denoted by expected value
 }
 ```
 
+```js
+{
+  name: {
+    type: 'string'
+  },
+  verifiedName: {
+    type: 'string',
+    conform: function (actual, original) {
+      if (actual === original.name) {
+        return true;
+      }
+
+      return false;
+    }
+  }
+}
+```
+
 #### dependencies
 Value is valid only if the dependent value is valid
 

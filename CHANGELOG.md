@@ -1,3 +1,8 @@
+0.2.2 / 2013-08-15
+==================
+
+  * Trim string values before checking if the property is required
+
 0.2.1 / 2013-08-14
 ==================
 
