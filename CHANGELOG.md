@@ -1,3 +1,8 @@
+0.2.4 / 2013-08-28
+==================
+
+  * Fix error when convert function is defined and format is an array
+
 0.2.3 / 2013-08-15
 ==================
 
