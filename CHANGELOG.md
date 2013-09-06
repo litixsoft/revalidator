@@ -1,3 +1,8 @@
+0.2.5 / 2013-09-06
+==================
+
+  * Only trim strings when the value in the object is still a string (could be something else when convert function is given an the string was already converted)
+
 0.2.4 / 2013-08-28
 ==================
 
